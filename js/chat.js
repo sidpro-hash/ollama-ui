@@ -12,7 +12,7 @@ OLLAMA_ORIGINS=${window.location.origin} ollama serve
 Also see: https://github.com/jmorganca/ollama/blob/main/docs/faq.md
 `;
 
-
+const chatStorage = 'ollamaLocalChats';
 
 const clipboardIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
 <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
@@ -315,7 +315,16 @@ window.onload = () => {
 
 function deleteChat() {
   const selectedChat = document.getElementById("chat-select").value;
+
   localStorage.removeItem(selectedChat);
+
+  let chatNames = JSON.parse(localStorage.getItem(chatStorage));
+  if(chatNames){
+    chatNames.indexOf(selectedChat) > -1 ? chatNames.splice(chatNames.indexOf(selectedChat), 1) : undefined;
+    localStorage.setItem(chatStorage, JSON.stringify(chatNames));
+  }
+  
+
   updateChatList();
 }
 
@@ -333,6 +342,15 @@ function saveChat() {
   const systemPrompt = document.getElementById('system-prompt').value;
   const model = getSelectedModel();
   localStorage.setItem(chatName, JSON.stringify({"history":history, "context":context, system: systemPrompt, "model": model}));
+
+  let chatNames = JSON.parse(localStorage.getItem(chatStorage));
+ 
+  if(!chatNames){
+    chatNames = [];
+  }
+  chatNames.push(chatName);
+  localStorage.setItem(chatStorage, JSON.stringify(chatNames));
+
   updateChatList();
 }
 
@@ -358,13 +376,16 @@ function startNewChat() {
 function updateChatList() {
   const chatList = document.getElementById("chat-select");
   chatList.innerHTML = '<option value="" disabled selected>Select a chat</option>';
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key === "host-address" || key == "system-prompt") continue;
-    const option = document.createElement("option");
-    option.value = key;
-    option.text = key;
-    chatList.add(option);
+  let chatNames = JSON.parse(localStorage.getItem(chatStorage));
+  if(chatNames){
+      for (let i = 0; i < chatNames.length; i++) {
+      const key = chatNames[i];
+      if (key === "host-address" || key == "system-prompt") continue;
+      const option = document.createElement("option");
+      option.value = key;
+      option.text = key;
+      chatList.add(option);
+    }
   }
 }
 
