@@ -40,6 +40,7 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <link href="css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/chat.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body data-bs-theme="dark">
@@ -60,13 +61,13 @@
                 <h1>Chat with Ollama</h1>
                 <!-- Model dropdown -->
                 <div class="d-flex align-items-center m-1">
-				<div class="p-2 flex-grow-1 bd-highlight">
-					<label for="context-select" class="me-2" style="font-size: normal;">Chat with Context:</label>
+				            <div class="p-2 flex-grow-1 bd-highlight">
+					              <label for="context-select" class="me-2" style="font-size: normal;">Chat with Context:</label>
                         <select id="context-select" class="form-select me-2" style="width: auto;">
                             <option value="NO" selected>NO</option>
-							<option value="YES">YES</option>
+							              <option value="YES">YES</option>
                         </select>
-				</div>
+				            </div>
 				
                   <div class="p-2 flex-grow-1 bd-highlight">
                     <label for="system-prompt" class="me-2" style="font-size: normal;">System Prompt</label>
@@ -88,7 +89,8 @@
                         <div class="d-flex flex-column">
                         <button id="new-chat" class="btn btn-dark mb-2" type="button">Reset</button>
                         <button id="save-chat" class="btn btn-secondary mb-2" type="button" data-bs-toggle="modal" data-bs-target="#nameModal">Save</button>
-                        <button id="delete-chat" class="btn btn-danger" type="button">Delete</button>
+                        <button id="delete-chat" class="btn btn-danger mb-2" type="button">Delete</button>
+                        <button id="export-chat" class="btn btn-primary" type="button">Export</button>
                       </div>
                     </div>
                 </div>

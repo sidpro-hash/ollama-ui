@@ -306,6 +306,7 @@ window.onload = () => {
   autoFocusInput();
 
   document.getElementById("delete-chat").addEventListener("click", deleteChat);
+  document.getElementById("export-chat").addEventListener("click", exportPDF);
   document.getElementById("new-chat").addEventListener("click", startNewChat);
   document.getElementById("saveName").addEventListener("click", saveChat);
   document.getElementById("chat-select").addEventListener("change", loadSelectedChat);
@@ -408,3 +409,20 @@ function autoGrow(element) {
 
     $(element).css("height", newHeight + "px");
 }
+
+
+// Export function
+    function exportPDF() {
+      const element = document.getElementById('scroll-wrapper');
+
+      const opt = {
+        margin:       0.5,
+        filename:     'chat.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+        pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      html2pdf().set(opt).from(element).save();
+    }
